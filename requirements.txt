@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 streamlit
 pandas
 numpy
@@ -7,3 +8,6 @@ scikit-learn
 xgboost
 lightgbm
 tensorflow
+=======
+matplotlib==3.4.3
+>>>>>>> 7d8891199e3c86a5f3cd15b9e557d7b8cd5015ab
