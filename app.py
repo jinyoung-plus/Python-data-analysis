@@ -489,7 +489,7 @@ tuned_models = {}
 
 # Model tuning with grid search
 for model_name, model, params in models:
-    grid_search = GridSearchCV(model, params, cv=2, scoring='neg_mean_squared_error', n_jobs=-1)
+    grid_search = GridSearchCV(model, params, cv=1, scoring='neg_mean_squared_error', n_jobs=-1)
     grid_search.fit(X_train, y_train)
     
     best_model = grid_search.best_estimator_
