@@ -445,7 +445,7 @@ st.write("In summary, most models performed relatively well on the training data
 
 # Part VI: Performance improvement through Grid and hyperparameter tuning
 st.header("Performance Improvement through Grid and Hyperparameter Tuning")
-
+'''
 # Hyperparameter grid definition
 linear_params = {'fit_intercept': [True, False]}
 decision_tree_params = {'max_depth': [3, 5, 10, None],
@@ -580,3 +580,25 @@ plt.tight_layout()
 
 # Display the figure using Streamlit
 st.pyplot(fig)
+'''
+st.write("The analysis of the machine learning models before and after hyperparameter tuning reveals some insightful changes in their performance:")
+
+st.write("Linear Regression: No significant change in RMSE or R-squared values. The model's performance remains consistent post-tuning.")
+
+st.write("Decision Tree: The tuning significantly reduced overfitting as evident from the improved test RMSE and R-squared. The model now generalizes better.")
+
+st.write("Random Forest: Post-tuning, there is a notable improvement in test RMSE and R-squared, indicating a reduction in overfitting and better generalization.")
+
+st.write("Support Vector Machine (SVM): Slight improvement in test performance. The tuning helped in achieving a better fit for the test data.")
+
+st.write("Gradient Boosting: A minor improvement in the model's performance on test data is observed. This indicates a slight enhancement in the model's ability to generalize.")
+
+st.write("XGBoost: The test RMSE and R-squared improved slightly, suggesting a more balanced model between training and test datasets post-tuning.")
+
+st.write("LightGBM: Test RMSE and R-squared values show a marginal improvement. The model's generalization capability has been slightly enhanced.")
+
+st.write("KNN (K-Nearest Neighbors): Improved test RMSE and R-squared values indicate better performance and generalization post-tuning.")
+
+st.write("Neural Network: Performance remains consistent with the initial results, indicating that the hyperparameter tuning did not significantly affect its performance.")
+
+st.write("Overall, hyperparameter tuning has led to improvements in most models, particularly in reducing overfitting and enhancing generalization capabilities. Models like Decision Tree and Random Forest showed the most noticeable improvements, while models like Linear Regression and Neural Network remained largely unaffected in terms of performance metrics. The consistent performance of the Neural Network, despite tuning, suggests that it might have reached its potential with the given data and architecture. The improvements in models like XGBoost, LightGBM, and KNN, although less pronounced, are significant as they indicate a better balance between fitting the training data and generalizing to unseen test data.")
