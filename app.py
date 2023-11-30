@@ -506,7 +506,7 @@ st.write("In summary, most models performed relatively well on the training data
 
 # Part VI: Performance improvement through Grid and hyperparameter tuning
 st.header("Performance Improvement through Grid and Hyperparameter Tuning")
-
+'''
 Linear Regression best params: {'fit_intercept': True}
 Decision Tree best params: {'max_depth': 5, 'min_samples_leaf': 4, 'min_samples_split': 2}
 Random Forest best params: {'max_depth': 10, 'max_features': 'sqrt', 'min_samples_leaf': 2, 'min_samples_split': 5, 'n_estimators': 200}
@@ -594,7 +594,7 @@ Train RMSE: 1.01
 Test RMSE: 1.03
 R-squared (Train): 0.56
 R-squared (Test): 0.53
-
+'''
 st.write("The analysis of the machine learning models before and after hyperparameter tuning reveals some insightful changes in their performance:")
 
 st.write("Linear Regression: No significant change in RMSE or R-squared values. The model's performance remains consistent post-tuning.")
