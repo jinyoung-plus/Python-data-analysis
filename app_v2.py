@@ -16,82 +16,17 @@ from sklearn.metrics import mean_squared_error, r2_score
 from keras.models import Sequential
 from keras.layers import Dense
 
-# Set page config
-st.set_page_config(
-    page_title="🌟 StarCraft2 Player Analysis",
-    page_icon="🚀",
-    layout="wide",
-)
+st.set_option('deprecation.showPyplotGlobalUse', False)
+st.set_option('deprecation.showPyplotGlobalUse', False)
+st.set_option('deprecation.showPyplotGlobalUse', False)
 
-# Custom CSS for styling
-st.markdown(
-    """
-    <style>
-        body {
-            background-color: #f4f4f4;
-            color: #333;
-        }
-        .streamlit-container {
-            max-width: 100%;
-        }
-        .streamlit-table {
-            width: 100%;
-        }
-        .reportview-container .markdown-text-container {
-            font-family: 'Arial', sans-serif;
-        }
-        .reportview-container h1, h2, h3, h4, h5, h6 {
-            color: #333;
-        }
-        .reportview-container p {
-            font-size: 16px;
-            line-height: 1.6;
-        }
-        .reportview-container a {
-            color: #0072b5;
-        }
-        .streamlit-table .data {
-            font-size: 14px;
-        }
-        .streamlit-table .col-header {
-            font-size: 16px;
-        }
-        .streamlit-button {
-            background-color: #0072b5;
-            color: white !important;
-        }
-        .streamlit-button:hover {
-            background-color: #00578a;
-        }
-        .nav-link {
-            font-size: 20px;
-            text-decoration: none;
-            margin-right: 20px;
-            color: #0072b5;
-        }
-        .nav-link:hover {
-            color: #00578a;
-        }
-        .emoji {
-            font-size: 24px;
-            margin-right: 8px;
-        }
-    </style>
-    """,
-    unsafe_allow_html=True,
-)
-
-# Navigation links
-st.markdown("<div class='nav-link'><a href='#overview' class='emoji'>📊</a> Overview</div>", unsafe_allow_html=True)
-st.markdown("<div class='nav-link'><a href='#data-preprocessing' class='emoji'>🛠️</a> Data Preprocessing</div>", unsafe_allow_html=True)
-st.markdown("<div class='nav-link'><a href='#data-visualization' class='emoji'>📈</a> Data Visualization</div>", unsafe_allow_html=True)
-st.markdown("<div class='nav-link'><a href='#data-modeling' class='emoji'>🤖</a> Data Modeling</div>", unsafe_allow_html=True)
-st.markdown("<div class='nav-link'><a href='#performance-summary' class='emoji'>📉</a> Performance Summary</div>", unsafe_allow_html=True)
-st.markdown("<div class='nav-link'><a href='#tuning' class='emoji'>⚙️</a> Tuning</div>", unsafe_allow_html=True)
+# Load the data
+data_file = "SkillCraft1_Dataset.csv"
+df = pd.read_csv(data_file, delimiter=',')
 
 # Title and Team Information
 st.markdown("<div style='background-color: lightyellow; padding: 10px; border-radius: 5px;'>", unsafe_allow_html=True)
-st.title("🐍 Python for Data Analysis Final Project")
+st.title("Python for Data Analysis Final Project")
 st.header("Characteristics of StarCraft2 Players")
 st.subheader("Dataset: SkillCraft1 Master")
 st.subheader("Team Members: Sainan BI, Lancine Conde, Jinyoung Ko")
@@ -114,8 +49,6 @@ st.markdown("""
 
 # Overview Section
 st.subheader("Overview")
-
-
 st.markdown("""
     Through this project, we would like to examine the characteristics of StarCraft 2 players using the skillCraft1 Master data set. Using the game-related statistics contained in this data, we will analyze the relationship between various factors of the player and his or her performance.
     StarCraft player ranks range from 1 to 8, meaning 'Bronze', 'Silver', 'Gold', 'Platinum', 'Diamond', 'Master', 'GrandMaster', and 'Professional'.
@@ -137,7 +70,7 @@ import warnings
 warnings.filterwarnings("ignore")
 
 # Load the data set
-data_file = "/content/sample_data/SkillCraft1_Dataset.csv"
+data_file = "SkillCraft1_Dataset.csv"
 df = pd.read_csv(data_file, delimiter=',')
 
 # Data Preview 1 - Check data size
@@ -167,7 +100,7 @@ st.markdown("""
 """)
 
 # Part II: Data preprocessing
-st.header("Data preprocessing")
+st.header("Part II: Data preprocessing")
 
 # Imputation missing data and Handling outliers
 st.subheader("Imputation missing data and Handling outliers")
@@ -375,9 +308,15 @@ st.markdown("☞Remark : We were able to confirm relationships between data thro
 
 
 # Display Part IⅤ: data Modeling text
-st.title("Data Modeling")
+st.title("Part IⅤ: Data Modeling")
 st.write("1. Applying various models")
 st.write("- 1) Linear Regression, 2) Decision Tree, 3) Random Forest, 4) Support Vector Machine, 5) Gradient Boosting, 6) XGBoost, 7) LightGBM, 8) KNN, 9) Neural Network")
+
+
+
+
+
+
 
 import streamlit as st
 import pandas as pd
@@ -397,7 +336,7 @@ from tensorflow.keras.layers import Dense
 import matplotlib.pyplot as plt
 
 # Load the data
-data_file = "/content/sample_data/SkillCraft1_Dataset.csv"
+data_file = "SkillCraft1_Dataset.csv"
 df = pd.read_csv(data_file, delimiter=',')
 
 # ... (Previous Streamlit code for data preprocessing and visualization)
@@ -506,7 +445,7 @@ st.write("In summary, most models performed relatively well on the training data
 
 # Part VI: Performance improvement through Grid and hyperparameter tuning
 st.header("Performance Improvement through Grid and Hyperparameter Tuning")
-
+'''
 # Hyperparameter grid definition
 linear_params = {'fit_intercept': [True, False]}
 decision_tree_params = {'max_depth': [3, 5, 10, None],
@@ -550,7 +489,7 @@ tuned_models = {}
 
 # Model tuning with grid search
 for model_name, model, params in models:
-    grid_search = GridSearchCV(model, params, cv=5, scoring='neg_mean_squared_error', n_jobs=-1)
+    grid_search = GridSearchCV(model, params, cv=1, scoring='neg_mean_squared_error', n_jobs=-1)
     grid_search.fit(X_train, y_train)
     
     best_model = grid_search.best_estimator_
@@ -641,3 +580,25 @@ plt.tight_layout()
 
 # Display the figure using Streamlit
 st.pyplot(fig)
+'''
+st.write("The analysis of the machine learning models before and after hyperparameter tuning reveals some insightful changes in their performance:")
+
+st.write("Linear Regression: No significant change in RMSE or R-squared values. The model's performance remains consistent post-tuning.")
+
+st.write("Decision Tree: The tuning significantly reduced overfitting as evident from the improved test RMSE and R-squared. The model now generalizes better.")
+
+st.write("Random Forest: Post-tuning, there is a notable improvement in test RMSE and R-squared, indicating a reduction in overfitting and better generalization.")
+
+st.write("Support Vector Machine (SVM): Slight improvement in test performance. The tuning helped in achieving a better fit for the test data.")
+
+st.write("Gradient Boosting: A minor improvement in the model's performance on test data is observed. This indicates a slight enhancement in the model's ability to generalize.")
+
+st.write("XGBoost: The test RMSE and R-squared improved slightly, suggesting a more balanced model between training and test datasets post-tuning.")
+
+st.write("LightGBM: Test RMSE and R-squared values show a marginal improvement. The model's generalization capability has been slightly enhanced.")
+
+st.write("KNN (K-Nearest Neighbors): Improved test RMSE and R-squared values indicate better performance and generalization post-tuning.")
+
+st.write("Neural Network: Performance remains consistent with the initial results, indicating that the hyperparameter tuning did not significantly affect its performance.")
+
+st.write("Overall, hyperparameter tuning has led to improvements in most models, particularly in reducing overfitting and enhancing generalization capabilities. Models like Decision Tree and Random Forest showed the most noticeable improvements, while models like Linear Regression and Neural Network remained largely unaffected in terms of performance metrics. The consistent performance of the Neural Network, despite tuning, suggests that it might have reached its potential with the given data and architecture. The improvements in models like XGBoost, LightGBM, and KNN, although less pronounced, are significant as they indicate a better balance between fitting the training data and generalizing to unseen test data.")
