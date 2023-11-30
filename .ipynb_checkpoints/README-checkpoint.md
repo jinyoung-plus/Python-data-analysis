@@ -10,11 +10,6 @@
 - Lancinè Condé
 - Jinyoung Ko
 
-### Streamlit link URL: https://python-data-analysis-23.streamlit.app/
-
-## Overview
-Through this project, we would like to examine the characteristics of StarCraft 2 players using the skillCraft1 Master data set. Using the game-related statistics contained in this data, we will analyze the relationship between various factors of the player and his or her performance.
-
 ## Contents
 
 ### Part I: Load Data and Identify Data Characteristics

@@ -137,7 +137,7 @@ import warnings
 warnings.filterwarnings("ignore")
 
 # Load the data set
-data_file = "SkillCraft1_Dataset.csv"
+data_file = "/content/sample_data/SkillCraft1_Dataset.csv"
 df = pd.read_csv(data_file, delimiter=',')
 
 # Data Preview 1 - Check data size
@@ -397,7 +397,7 @@ from tensorflow.keras.layers import Dense
 import matplotlib.pyplot as plt
 
 # Load the data
-data_file = "SkillCraft1_Dataset.csv"
+data_file = "/content/sample_data/SkillCraft1_Dataset.csv"
 df = pd.read_csv(data_file, delimiter=',')
 
 # ... (Previous Streamlit code for data preprocessing and visualization)
@@ -507,113 +507,137 @@ st.write("In summary, most models performed relatively well on the training data
 # Part VI: Performance improvement through Grid and hyperparameter tuning
 st.header("Performance Improvement through Grid and Hyperparameter Tuning")
 
-Linear Regression best params: {'fit_intercept': True}
-Decision Tree best params: {'max_depth': 5, 'min_samples_leaf': 4, 'min_samples_split': 2}
-Random Forest best params: {'max_depth': 10, 'max_features': 'sqrt', 'min_samples_leaf': 2, 'min_samples_split': 5, 'n_estimators': 200}
-Support Vector Machine best params: {'C': 10, 'gamma': 'auto', 'kernel': 'rbf'}
-Gradient Boosting best params: {'learning_rate': 0.01, 'max_depth': 3, 'n_estimators': 300}
-XGBoost best params: {'learning_rate': 0.1, 'max_depth': 3, 'n_estimators': 50}
-[LightGBM] [Info] Auto-choosing col-wise multi-threading, the overhead of testing was 0.000419 seconds.
-You can set `force_col_wise=true` to remove the overhead.
-[LightGBM] [Info] Total Bins 1275
-[LightGBM] [Info] Number of data points in the train set: 2714, number of used features: 5
-[LightGBM] [Info] Start training from score 4.177229
-[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
-[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
-[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
-[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
-[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
-[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
-[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
-[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
-[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
-[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
-[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
-[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
-[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
-[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
-[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
-[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
-[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
-[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
-[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
-LightGBM best params: {'learning_rate': 0.1, 'max_depth': 3, 'n_estimators': 50}
-KNN best params: {'metric': 'euclidean', 'n_neighbors': 9, 'weights': 'uniform'}
-Model: Linear Regression
-Train RMSE: 1.01
-Test RMSE: 1.03
-R-squared (Train): 0.56
-R-squared (Test): 0.53
+# Hyperparameter grid definition
+linear_params = {'fit_intercept': [True, False]}
+decision_tree_params = {'max_depth': [3, 5, 10, None],
+                        'min_samples_split': [2, 5, 10],
+                        'min_samples_leaf': [1, 2, 4]}
+random_forest_params = {'n_estimators': [50, 100, 200],
+                        'max_features': ['auto', 'sqrt'],
+                        'max_depth': [10, 20, None],
+                        'min_samples_split': [2, 5, 10],
+                        'min_samples_leaf': [1, 2, 4]}
+svr_params = {'C': [0.1, 1, 10],
+              'gamma': ['scale', 'auto'],
+              'kernel': ['rbf', 'poly', 'sigmoid']}
+gradient_boosting_params = {'n_estimators': [100, 200, 300],
+                            'learning_rate': [0.01, 0.1, 0.2],
+                            'max_depth': [3, 5, 7]}
+xgboost_params = {'n_estimators': [50, 100, 200],
+                  'learning_rate': [0.01, 0.1, 0.2],
+                  'max_depth': [3, 5, 7]}
+lightgbm_params = {'n_estimators': [50, 100, 200],
+                   'learning_rate': [0.01, 0.1, 0.2],
+                   'max_depth': [3, 5, 7]}
+knn_params = {'n_neighbors': [3, 5, 7, 9],
+              'weights': ['uniform', 'distance'],
+              'metric': ['euclidean', 'manhattan']}
 
-Model: Decision Tree
-Train RMSE: 0.98
-Test RMSE: 1.08
-R-squared (Train): 0.58
-R-squared (Test): 0.48
+# Model and grid connections
+models = [
+    ('Linear Regression', LinearRegression(), linear_params),
+    ('Decision Tree', DecisionTreeRegressor(random_state=42), decision_tree_params),
+    ('Random Forest', RandomForestRegressor(random_state=42), random_forest_params),
+    ('Support Vector Machine', SVR(), svr_params),
+    ('Gradient Boosting', GradientBoostingRegressor(random_state=42), gradient_boosting_params),
+    ('XGBoost', XGBRegressor(random_state=42), xgboost_params),
+    ('LightGBM', LGBMRegressor(random_state=42), lightgbm_params),
+    ('KNN', KNeighborsRegressor(), knn_params)
+]
 
-Model: Random Forest
-Train RMSE: 0.72
-Test RMSE: 1.05
-R-squared (Train): 0.78
-R-squared (Test): 0.52
+# Save tuning results
+tuned_models = {}
 
-Model: Support Vector Machine
-Train RMSE: 1.00
-Test RMSE: 1.03
-R-squared (Train): 0.56
-R-squared (Test): 0.54
+# Model tuning with grid search
+for model_name, model, params in models:
+    grid_search = GridSearchCV(model, params, cv=5, scoring='neg_mean_squared_error', n_jobs=-1)
+    grid_search.fit(X_train, y_train)
+    
+    best_model = grid_search.best_estimator_
+    best_params = grid_search.best_params_
+    tuned_models[model_name] = best_model
+    
+    st.write(f"{model_name} best params: {best_params}")
 
-Model: Gradient Boosting
-Train RMSE: 0.97
-Test RMSE: 1.04
-R-squared (Train): 0.60
-R-squared (Test): 0.53
+# Performance evaluation for each tuned model
+for name, model in tuned_models.items():
+    train_preds = model.predict(X_train)
+    test_preds = model.predict(X_test)
+    
+    train_rmse = mean_squared_error(y_train, train_preds, squared=False)
+    test_rmse = mean_squared_error(y_test, test_preds, squared=False)
+    train_r2 = r2_score(y_train, train_preds)
+    test_r2 = r2_score(y_test, test_preds)
+    
+    st.write(f"Model: {name}")
+    st.write(f"Train RMSE: {train_rmse:.2f}")
+    st.write(f"Test RMSE: {test_rmse:.2f}")
+    st.write(f"R-squared (Train): {train_r2:.2f}")
+    st.write(f"R-squared (Test): {test_r2:.2f}")
+    st.write()
 
-Model: XGBoost
-Train RMSE: 0.95
-Test RMSE: 1.03
-R-squared (Train): 0.61
-R-squared (Test): 0.53
+# Performance evaluation of tuned neural network models
+nn_train_preds = nn_model.predict(X_train)
+nn_test_preds = nn_model.predict(X_test)
+nn_train_rmse = mean_squared_error(y_train, nn_train_preds, squared=False)
+nn_test_rmse = mean_squared_error(y_test, nn_test_preds, squared=False)
+nn_train_r2 = r2_score(y_train, nn_train_preds)
+nn_test_r2 = r2_score(y_test, nn_test_preds)
 
-Model: LightGBM
-Train RMSE: 0.96
-Test RMSE: 1.03
-R-squared (Train): 0.60
-R-squared (Test): 0.53
+st.write("Neural Network")
+st.write(f"Train RMSE: {nn_train_rmse:.2f}")
+st.write(f"Test RMSE: {nn_test_rmse:.2f}")
+st.write(f"R-squared (Train): {nn_train_r2:.2f}")
+st.write(f"R-squared (Test): {nn_test_r2:.2f}")
 
-Model: KNN
-Train RMSE: 0.94
-Test RMSE: 1.09
-R-squared (Train): 0.61
-R-squared (Test): 0.48
+# Calculate predicted values for each tuned model and draw graphs
+tuned_models['Neural Network'] = nn_model
+plt.figure(figsize=(15, 10))
 
-85/85 [==============================] - 0s 1ms/step
-22/22 [==============================] - 0s 763us/step
-Neural Network
-Train RMSE: 1.01
-Test RMSE: 1.03
-R-squared (Train): 0.56
-R-squared (Test): 0.53
+for i, (name, model) in enumerate(tuned_models.items()):
+    # model prediction
+    if name != 'Neural Network':
+        predictions = model.predict(X_test)
+    else:
+        predictions = nn_model.predict(X_test).flatten()  # Neural network model prediction
 
-st.write("The analysis of the machine learning models before and after hyperparameter tuning reveals some insightful changes in their performance:")
+    # Subplot settings
+    plt.subplot(3, 3, i + 1)
+    plt.scatter(y_test, predictions, alpha=0.5)
+    plt.plot([y_test.min(), y_test.max()], [y_test.min(), y_test.max()], 'k--', lw=2)
+    plt.title(f'{name} - Actual vs Predicted')
+    plt.xlabel('Actual Values')
+    plt.ylabel('Predicted Values')
 
-st.write("Linear Regression: No significant change in RMSE or R-squared values. The model's performance remains consistent post-tuning.")
+plt.tight_layout()
+st.pyplot(plt)
 
-st.write("Decision Tree: The tuning significantly reduced overfitting as evident from the improved test RMSE and R-squared. The model now generalizes better.")
 
-st.write("Random Forest: Post-tuning, there is a notable improvement in test RMSE and R-squared, indicating a reduction in overfitting and better generalization.")
+# Calculate predicted values for each tuned model and draw graphs
+st.header("Predicted Values and Actual vs Predicted Graphs")
 
-st.write("Support Vector Machine (SVM): Slight improvement in test performance. The tuning helped in achieving a better fit for the test data.")
+# Add neural network model to tuned models
+tuned_models['Neural Network'] = nn_model
 
-st.write("Gradient Boosting: A minor improvement in the model's performance on test data is observed. This indicates a slight enhancement in the model's ability to generalize.")
+# Create a Streamlit figure
+fig, axes = plt.subplots(nrows=3, ncols=3, figsize=(15, 10))
 
-st.write("XGBoost: The test RMSE and R-squared improved slightly, suggesting a more balanced model between training and test datasets post-tuning.")
+for (name, model), ax in zip(tuned_models.items(), axes.flatten()):
+    # model prediction
+    if name != 'Neural Network':
+        predictions = model.predict(X_test)
+    else:
+        predictions = nn_model.predict(X_test).flatten()  # Neural network model prediction
 
-st.write("LightGBM: Test RMSE and R-squared values show a marginal improvement. The model's generalization capability has been slightly enhanced.")
+    # Scatter plot settings
+    ax.scatter(y_test, predictions, alpha=0.5)
+    ax.plot([y_test.min(), y_test.max()], [y_test.min(), y_test.max()], 'k--', lw=2)
+    ax.set_title(f'{name} - Actual vs Predicted')
+    ax.set_xlabel('Actual Values')
+    ax.set_ylabel('Predicted Values')
 
-st.write("KNN (K-Nearest Neighbors): Improved test RMSE and R-squared values indicate better performance and generalization post-tuning.")
+# Adjust layout
+plt.tight_layout()
 
-st.write("Neural Network: Performance remains consistent with the initial results, indicating that the hyperparameter tuning did not significantly affect its performance.")
-
-st.write("Overall, hyperparameter tuning has led to improvements in most models, particularly in reducing overfitting and enhancing generalization capabilities. Models like Decision Tree and Random Forest showed the most noticeable improvements, while models like Linear Regression and Neural Network remained largely unaffected in terms of performance metrics. The consistent performance of the Neural Network, despite tuning, suggests that it might have reached its potential with the given data and architecture. The improvements in models like XGBoost, LightGBM, and KNN, although less pronounced, are significant as they indicate a better balance between fitting the training data and generalizing to unseen test data.")
-
+# Display the figure using Streamlit
+st.pyplot(fig)
